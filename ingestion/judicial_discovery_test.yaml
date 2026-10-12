@@ -24,3 +24,52 @@ workflowConfig:
     authProvider: openmetadata
     securityConfig:
       jwtToken: "eyJraWQiOiJHYjM4OWEtOWY3Ni1nZGpzLWE5MmotMDI0MmJrOTQzNTYiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzQm90IjpmYWxzZSwiaXNzIjoib3Blbi1tZXRhZGF0YS5vcmciLCJpYXQiOjE2NjM5Mzg0NjIsImVtYWlsIjoiYWRtaW5Ab3Blbm1ldGFkYXRhLm9yZyJ9.tS8um_5DKu7HgzGBzS1VTA5uUjKWOCU0B_j08WXBiEC0mr0zNREkqVfwFDD-d24HlNEbrqioLsBuFRiwIWKc1m_ZlVQbG7P36RUxhuv2vbSp80FKyNM-Tj93FDzq91jsyNmsQhyNv_fNr3TXfzzSPjHt8Go0FMMP66weoKMgW2PbXlhVKwEuXUHyakLLzewm9UMeQaEiRzhiTMU3UkLXcKbYEJJvfNFcLwSl9W8JCO_l0Yj3ud-qt_nQYEZwqW6u5nfdQllN133iikV4fM5QZsMCnm8Rq1mvLR0y9bmJiD7fwM1tmJ791TUWqmKaTnP49U493VanKpUAfzIiOiIbhg"
+
+# note:
+# this configuration file define the source, processor(orm-profiler) and sink(metadata-rest) acting as the primary blueprint for how metadata is extracted and sent to openmetadata
+
+#=================================  Basic understanding ========================================================================
+# ------------------what is that orm-profiler: ---------------------------
+#instead of writing heavy custom sql scripts to calcualte data healt status for every table openmetdata uses as ORM(object relational mapping) framework packaged as a processor(orm-profiler)
+#orm-profiler is a fully open-source Python processor bundled inside OpenMetadata's ingestion framework.
+# when u run your ingestions workflow the orm-profiler takes the database schema discoverd from postgresql and dynamically generated optimized aggregate queries to inspects your tables
+#what it does at the code level:
+# 1. inspects column metadata: it reads the data types discovered during schema extraction( e.g checking  if columns is varchar ,int or date)
+# 2. compute aggregate metrics: it executes lighweight sql queries behind the scenes to calculated statistics per column, such as:
+     #- rown count: total records in the table
+     #- null count and percentage: how many rows have missing or null value
+     #- distinct count & uniqness: how many uniue values exist(useful for spoting keys or ids).
+     #- min/max/mean: values ranges for numeric or date colms
+#packages and send payload : it packages these computed statistics into structured metdata objects and hands them off to the sink(metadata-rest) to be pushed to the openmetadata server backend
+
+## In simple the orm-profiler is the engine that turns raw table schmeas into measurable data quality and health metrics without copying or exposing your actual row-level data.
+#-------------------------------------------------------------------------------------------------------------
+# in the orm-profiler and metadata-rest represents the two critical engines of the data discovery stage:
+  #1. orm-profiler-discovery and analysis processor
+  #2. metadata-rest- The Transmission sink(once the orm-profiler gather and structures that information, the sink package it into payloads and trnasmits them via REST APIA calls straight to the OpenMetadata server catalog)
+  # together they form the exact  discovery pipline needed to map out schemas before feeding them into privtrust.ai cosnent and comppiance polices.
+
+
+#===========================================================================================================================================
+
+#-================================== IN-Depth understading =======================================================================
+
+# --------------- orm-profiler under the hood ---------------------------------
+# unclike  simple schema parser that only read table definitations, the orm-profiler acts as intelligent metric compute engine.
+ # workflow:
+  #1. ORM inspections via SQLAlchemy: 
+    #- it uses SQLAlchemy reflection models to intospect the database tables discoverd by your postgesql source connector(local_judicial_dn).
+    # it maps database columns into python ORM data objects and identifies their native types( e.g text, numeric ,datetime,boolean).
+  # 2. Dynamic aggregae query generation;
+    # instead of pulling raw table rows into memeory (which would violate  privacy and cause performance  bottlenecks) the profiler dynamically 
+   # constructs optimized SQL queries containing aggregate functions (COUNT,COUNT(DISTINCT),MIN,MAX,AVG,SUM)
+   #Example Query Concept: For a text column like citizen_aadhaar, it generates optimized statements to calculate null counts, distinct value counts, and uniqueness ratios directly inside PostgreSQL.
+  #3. metric calculation and profilliing result structuring:
+   # it executes these qeries against your tables(like court_cases0,captures the resulting stastics ,and structure them into standardized JSON metrics objects(containing row counts,null percentages and value distributions).
+  #4. Hand-Off to the Sink:
+    #Once computed, these metrics are handed over to the metadata-rest sink package, which packages them into REST payloads and pushes them to your OpenMetadata server.
+
+
+
+
+# next task:  code understanding

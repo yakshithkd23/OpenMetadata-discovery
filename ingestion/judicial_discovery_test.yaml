@@ -71,5 +71,20 @@ workflowConfig:
 
 # ===================================================================================================================================================================
 #===================================================================== Code implementation ============================================================================
-# 
+# 1. ORM inspection and SQLAlchemy Reflection:
+  # https://github.com/yakshithkd23/OpenMetadata-discovery/blob/open-dis-doc/ingestion/src/metadata/profiler/processor/processor.py
+  #The file u are looking at is directly realted to the profiler processor pipline, but ti serve as the orchestrator rather then the direct databse reflection layer.
+  
+  # let us dive into how actually it is realted
+  # 1. it receives the profilersourceandentity record containing table metadata already fetched from the source
+  # 2. initializes the profiler runner: it calls record.profiler_source.get_profiler_runner(Record.entity,self.profiler_config) to set up the execution enviournment for that specific table (like court_cases).
+  # 3. trigger execution: it invokes profiler_runner.process() to execute the profilling queries and handle any errors.
+  # where sqlalchemy reflection actually happens:
+   # while processor.py managed the workflow step, the sqlalchemy reflection and query generation happen right beneath it in the profilling source and orm modules.
+   #- the source interface: Behind profiler_source the connector uses sqlalachemy engine sessions to inspects databse catalog and reflect database tables into python objects.
+   # the orm engine: the atcual sql aggregate building blocks(like count, nullcount,etc) are constructed using the helper classes located in the profiler /orm/directort we looked ate ealier,
+# 2. sampling
+  # before runnig heavy scans, the profiler extracts a tiny controlled micro-sample of rows (typically capped at a maximum of 50 rows) from tavle without moving the full dataset out  of postgresql
+# 3. Metric Calculators (profiler/metrics/ folder): Individual metric classes (like row_count.py, nullCount.py, distinctCount.py) define the exact SQL statements generated for each column type.
 
+# 4. The Sink (metadata_rest.py): Handles packaging the final computed JSON metrics and transmitting them securely via REST API to your OpenMetadata server.

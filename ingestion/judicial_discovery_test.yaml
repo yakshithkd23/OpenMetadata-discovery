@@ -52,13 +52,13 @@ workflowConfig:
 
 #===========================================================================================================================================
 
-#-================================== IN-Depth understading =======================================================================
+#-=========================================================== IN-Depth understading =======================================================================
 
 # --------------- orm-profiler under the hood ---------------------------------
 # unclike  simple schema parser that only read table definitations, the orm-profiler acts as intelligent metric compute engine.
  # workflow:
   #1. ORM inspections via SQLAlchemy: 
-    #- it uses SQLAlchemy reflection models to intospect the database tables discoverd by your postgesql source connector(local_judicial_dn).
+    #- it uses SQLAlchemy reflection models to into inspect the database tables discoverd by your postgesql source connector(local_judicial_dn).
     # it maps database columns into python ORM data objects and identifies their native types( e.g text, numeric ,datetime,boolean).
   # 2. Dynamic aggregae query generation;
     # instead of pulling raw table rows into memeory (which would violate  privacy and cause performance  bottlenecks) the profiler dynamically 
@@ -69,7 +69,7 @@ workflowConfig:
   #4. Hand-Off to the Sink:
     #Once computed, these metrics are handed over to the metadata-rest sink package, which packages them into REST payloads and pushes them to your OpenMetadata server.
 
+# ===================================================================================================================================================================
+#===================================================================== Code implementation ============================================================================
+# 
 
-
-
-# next task:  code understanding

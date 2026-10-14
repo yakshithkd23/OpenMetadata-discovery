@@ -3,25 +3,29 @@ source:
   serviceName: gcp_cloud_warehouse
   serviceConnection:
     config:
-      type: BigQuery
-      projectId: "gen-lang-client-0546734282"
-      credentials:
-        gcsConfig:
-          type: ServiceAccount
-          secretKey:
-            privateKey: "E:/mosip_opensource/privtrust/openmetadata_discovery/OpenMetadata-discovery/ingestion/gen-lang-client-0546734282-f443e0c40ea4.json"
-sourceConfig:
-  config:
-    type: Profiler
-processor:
-  type: "orm-profiler"
-  config: {}
+      type: BigQuery # cloud db type
+      credentials: 
+        gcpConfig:
+          type: service_account
+          projectId: "gen-lang-client-0546734282"
+          privateKeyId: # ----- write private key id of the service account -----------------
+          privateKey: # --- service account private key ------------------
+          clientEmail: # ----------------- client email ----------------------------------
+          clientId: "104701801232940482181"
+          authUri: "https://accounts.google.com/o/oauth2/auth"
+          tokenUri: "https://oauth2.googleapis.com/token"
+          authProviderX509CertUrl: "https://www.googleapis.com/oauth2/v1/certs"
+          clientX509CertUrl: "https://www.googleapis.com/robot/v1/metadata/x509/openmetadata-discovery-sa%40gen-lang-client-0546734282.iam.gserviceaccount.com"
+  sourceConfig:
+    config:
+      type: DatabaseMetadata
 sink:
   type: metadata-rest
   config: {}
 workflowConfig:
   openMetadataServerConfig:
+    # hostPort: http://host.docker.internal:8585/api
     hostPort: http://localhost:8585/api
     authProvider: openmetadata
     securityConfig:
-      jwtToken: "eyJraWQiOiJHYjM4OWEtOWY3Ni1nZGpzLWE5MmotMDI0MmJrOTQzNTYiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzQm90IjpmYWxzZSwiaXNzIjoib3Blbi1tZXRhZGF0YS5vcmciLCJpYXQiOjE2NjM5Mzg0NjIsImVtYWlsIjoiYWRtaW5Ab3Blbm1ldGFkYXRhLm9yZyJ9.tS8um_5DKu7HgzGBzS1VTA5uUjKWOCU0B_j08WXBiEC0mr0zNREkqVfwFDD-d24HlNEbrqioLsBuFRiwIWKc1m_ZlVQbG7P36RUxhuv2vbSp80FKyNM-Tj93FDzq91jsyNmsQhyNv_fNr3TXfzzSPjHt8Go0FMMP66weoKMgW2PbXlhVKwEuXUHyakLLzewm9UMeQaEiRzhiTMU3UkLXcKbYEJJvfNFcLwSl9W8JCO_l0Yj3ud-qt_nQYEZwqW6u5nfdQllN133iikV4fM5QZsMCnm8Rq1mvLR0y9bmJiD7fwM1tmJ791TUWqmKaTnP49U493VanKpUAfzIiOiIbhg"      
+      jwtToken: #--- open metadata admin token ---#

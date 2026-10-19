@@ -1,3 +1,4 @@
+# metadata ingest -c gcp_cloud_discovery.yaml, the OpenMetadata CLI reads this configuration to execute the discovery engine and orm-profiler pipeline!
 source:
   type: bigquery
   serviceName: gcp_cloud_warehouse
@@ -8,9 +9,9 @@ source:
         gcpConfig:
           type: service_account
           projectId: "gen-lang-client-0546734282"
-          privateKeyId: # ----- write private key id of the service account -----------------
-          privateKey: # --- service account private key ------------------
-          clientEmail: # ----------------- client email ----------------------------------
+          privateKeyId: "f443e0c40ea4ae7b7776c7427d0f1da008b85f07" # ----- write private key id of the service account -----------------
+          privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCl1Y2d5eCgexGp\n2ddO2YVRQgzDMQA3xCo5oC+g2veqbs/syF0bi54VvGBCXHlsEQjiXm2Gx2uLAHly\n2nieJzQYpubSeN2NCt0olf3X3ydmXp4sQ22C6qn+NZrayxAV8HFnXWRP8qo/i69J\n6h7T2UI9v60jEUOTzf9Mg+yEzsp71LXKVtx9rvzq30iK3fAPqTDj6pJbhCw4J+Re\nSAKMLxWouAmVe90c2Q9qutAqVWuTPAOuYQqR96p11PfTcKtppnNz9p0ZTfjp7q1H\nzJc46bySFTJie0dLRgX+eAkpbibj6LZEfjqZWYxszFfnlAgln1549+ER5lq4zedx\nEtaR+RulAgMBAAECggEAKGQv5p4XjK79GeQzw4JKrQSL7DzyoyKV8Ew6XZEH0szD\nuxYAS5XBjuS/g1pXvsEVa2F5huLqqEQY0Kcyyr6cu0ZnoSsMN27GeDy0Q9CYHaB9\nISXZNhJnDkJLMfBUvis+y+Dc7nYaDnk83CF4mbvonPajOo/ZaFY70Qyu3pgpjGhZ\n7PW0Ax8HnRRvS7KxaXGTfxrsPRnxDZ0Y+9nL3YjG0bcQUTsItrXAL75XnHnvjgKv\nqMltYFFP4Ta/8SRx3tEpiq5CWs63twvVsrRgqWg2RakuSBENT4Gx96gjb+YwxEK2\nbSS8bEypsWaHTo5GRPfHn2vCmRR8mowizoFJOW04sQKBgQDSJY3DHkXFX2l92KeA\n8J6pzfjJWHV7/J6LAG1fwD5cZDC535ZIsRbfnl/wfdn7ksKo5B9R7Y1w7j/sMIwB\n/6Pa3qBK0StQ8cAZx4LF992o0VOitWYm2uMsj4YZwyXEAP7KYcXb/ruzTRuuvNTD\nVYAE/sJDUNyfx4+v7TmZFymXPQKBgQDKBMbGLCmHJ1IWCeHduOfrZd58iUwP0NHq\n6Jc5+kljzbMuggy2XlwVxwGH2MkG4FbANlMad7UHZUy+2Z2CxHADxekERA+H7BCS\n7mCNhdWcUrT4/74wXQdW25LvW91CsyFN4rez8oqSMlBulI/VGWnXuNibHlG8buz/\nMFLG/6aciQKBgFoZtd1ZpmqIjQ9jC/ZxtGVzpV6WqdCeME/CwCJUp6gvYODg52uF\nWhxIqDPRkduWQhXtsSwMYR9xV0DqU60rsVJPL4TEiADtlgK3ku9UZdpS3bwecIzq\nPorFgqabEB8omhWltBKt9kZbIipaVhLmHryFij8YdW+gPZAdcxubXb61AoGAXR0M\nfYUXcwslo7DUYXz7sJ1YijBCVbvbNZoVMgzxzMWgBBy/PUOK0CLUyseaCMhYU+n2\nLenlD86aLBFjr0VZl/OdrnCsc+rTzNWAvVplldLtRSOjhukqG9fDBv5hon+sJxkL\nsS5mvnHgbsec8AzxoxO5Cu5ToDXEmO6uCLkHE3kCgYAPCQz+5MgoNQeiyPcMXga6\n7388fHBjsSvpjq51NKfJZcEjSS1U489U4YK8Uf4ND1wkX2+q8V4CnFDjqo8HcrPA\n1GKoZO7CPjJ2erC4f/fyBBPC3rZCNmrbTSLxCsnnQ46OlsAg78UcFhy5sQ97vDE4\nv/lrTqoZMtwiPnhtCMwn3Q==\n-----END PRIVATE KEY-----\n" # --- service account private key ------------------
+          clientEmail: "openmetadata-discovery-sa@gen-lang-client-0546734282.iam.gserviceaccount.com" # ----------------- client email ----------------------------------
           clientId: "104701801232940482181"
           authUri: "https://accounts.google.com/o/oauth2/auth"
           tokenUri: "https://oauth2.googleapis.com/token"
@@ -28,4 +29,5 @@ workflowConfig:
     hostPort: http://localhost:8585/api
     authProvider: openmetadata
     securityConfig:
-      jwtToken: #--- open metadata admin token ---#
+      jwtToken: eyJraWQiOiJHYjM4OWEtOWY3Ni1nZGpzLWE5MmotMDI0MmJrOTQzNTYiLCJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJvcGVuLW1ldGFkYXRhLm9yZyIsInN1YiI6ImFkbWluIiwicm9sZXMiOlsiQWRtaW4iXSwiZW1haWwiOiJhZG1pbkBvcGVuLW1ldGFkYXRhLm9yZyIsImlzQm90IjpmYWxzZSwidG9rZW5UeXBlIjoiUEVSU09OQUxfQUNDRVNTIiwiaWF0IjoxNzkyMzgwNjg4LCJleHAiOjE3OTI0NjcwODh9.bWCz1BUkJVkIGRPkWqYEu-3R-WL8mqneDxWGN88p-UtzixpPiFUr0Qo2KeQTMO9pnQW0_bkeZwNdN0_68spwyebaP0GHuLx6ENaIGFdJmDCdenrUFPF2z6hYfCnZwp-tfIT-wpzg8LFEgiUlwiQbGOi0yVJBFw0Z4PjHuTVMDYXb9GyELAwxILb3B33GfLXci8tyjGZB03c-y0oCvNySxfd6CvqjqKehTa2EmukxtJMRgz_7iLcGzHfKhcZrpG8rHnj6mCtWCucyAF-iXbDeYJRjmwlZEUlPk7HIiB3lIXswtzfH3Re_aiIXqZsL4_WV-JYeJTIyDyzX6Qx3excMjw
+#-------------------------- Information: 
